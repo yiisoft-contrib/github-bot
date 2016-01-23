@@ -56,6 +56,13 @@ $application = new yii\web\Application([
 					'class' => 'yii\log\FileTarget',
 					'logFile' => '@app/logs/access.log',
 					'categories' => ['request'],
+					'logVars' => [],
+					'enableRotation' => false,
+				],
+				[
+					'class' => 'yii\log\FileTarget',
+					'logFile' => '@app/logs/access-full.log',
+					'categories' => ['request'],
 					'logVars' => ['_GET', '_POST'],
 				],
 				[
@@ -63,6 +70,7 @@ $application = new yii\web\Application([
 					'logFile' => '@app/logs/actions.log',
 					'categories' => ['action'],
 					'logVars' => [],
+					'enableRotation' => false,
 				],
 				[
 					'class' => 'yii\log\FileTarget',
@@ -74,8 +82,8 @@ $application = new yii\web\Application([
 		],
 	],
 
-	'on beforeRequest' => function($event) {
-		Yii::info('Request "' . Yii::$app->requestedRoute . '" from ' . Yii::$app->request->userIP . ', UserAgent: ' . Yii::$app->request->userAgent, 'request');
+	'on beforeAction' => function($event) {
+		Yii::info('Request ' . Yii::$app->request->method . ' r"' . Yii::$app->requestedRoute . '" from ' . Yii::$app->request->userIP . ', UserAgent: ' . Yii::$app->request->userAgent, 'request');
 		if (!empty(Yii::$app->request->bodyParams)) {
 			Yii::info(Yii::$app->request->bodyParams, 'request');
 		}
