@@ -26,7 +26,7 @@ class GithubController extends  Controller
 
 	public function hooks()
 	{
-		$base = rtrim('/', Yii::$app->params['webUrl']);
+		$base = rtrim(Yii::$app->params['webUrl'], '/');
 		return [
 			'issues' => $base . '/index.php?r=issues',
 		];
