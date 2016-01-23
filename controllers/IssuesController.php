@@ -50,12 +50,10 @@ class IssuesController extends Controller
 			case 'labeled':
 				// if label is added, check for actions
 
-				if (isset($params['labels'])) {
-					foreach($params['labels'] as $label) {
-						foreach(\Yii::$app->params['actions'] as $action) {
-							if ($label['name'] == $action['label']) {
-								$this->performAction($action, $params);
-							}
+				if (isset($params['label'])) {
+					foreach(\Yii::$app->params['actions'] as $action) {
+						if ($params['label']['name'] == $action['label']) {
+							$this->performAction($action, $params);
 						}
 					}
 				}
