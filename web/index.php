@@ -21,6 +21,8 @@ $application = new yii\web\Application([
 		'github' => 'app\components\Github',
 
 		'request' => [
+			'enableCsrfValidation' => false,
+			'enableCookieValidation' => false,
 			'parsers' => [
 				'application/json' => 'yii\web\JsonParser',
 			],
