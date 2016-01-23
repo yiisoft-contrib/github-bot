@@ -55,7 +55,9 @@ class Github extends Component
 
 		$oldAlgo = Yii::$app->security->macHash;
 		Yii::$app->security->macHash = $algo;
-		Yii::$app->security->validateData($hash.$body, $secret);
+		if (Yii::$app->security->validateData($hash.$body, $secret) === false) {
+			throw new BadRequestHttpException('Unable to validate submitted data.');
+		}
 		Yii::$app->security->macHash = $oldAlgo;
 	}
 
