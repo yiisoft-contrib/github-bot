@@ -32,7 +32,6 @@ class IssuesController extends Controller
 		// content of $params should look like here: https://developer.github.com/v3/activity/events/types/#issuesevent
 		$params = \Yii::$app->request->bodyParams;
 		$event = \Yii::$app->request->headers->get('X-Github-Event');
-		Yii::error($event);
 		if (!$event) {
 			\Yii::warning('event request without X-Github-Event header.');
 			throw new BadRequestHttpException('Event request without X-Github-Event header.');
@@ -42,7 +41,7 @@ class IssuesController extends Controller
 			return ['success' => true, 'action' => 'pong'];
 		}
 
-		if ($event === 'issues') {
+		if ($event !== 'issues') {
 			throw new BadRequestHttpException('Only issues events should be deployed here.');
 		}
 
