@@ -51,7 +51,7 @@ COMMENT
 		[
 			'action' => 'move',
 			'label' => 'feature:redis',
-			'repo' => 'cebe-test/testrepo-redis',
+			'repo' => 'yiisoft/yii2-redis',
 		],
 
 	],

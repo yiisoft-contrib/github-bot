@@ -75,13 +75,16 @@ class IssuesController extends Controller
 		switch($action['action'])
 		{
 			case 'comment':
-				// wait 5sec before reply to have github issue events in order
-				sleep(5);
+				sleep(5); // wait 5sec before reply to have github issue events in order
 				$this->replyWithComment($params['repository'], $params['issue'], $action['comment']);
 				if ($action['close']) {
-					sleep(5);
+					sleep(5); // wait 5sec before reply to have github issue events in order
 					$this->closeIssue($params['repository'], $params['issue']);
 				}
+				break;
+			case 'move':
+				sleep(5); // wait 5sec before reply to have github issue events in order
+				$this->moveIssue($params['repository'], $action['repo'], $params['issue'], $params['sender']);
 				break;
 		}
 
@@ -111,4 +114,25 @@ class IssuesController extends Controller
 		Yii::info("closed issue {$repository['owner']['login']}/{$repository['name']}#{$issue['number']}.", 'action');
 	}
 
+	protected function moveIssue($fromRepository, $toRepository, $issue, $sender)
+	{
+		/** @var $client \Github\Client */
+		$client = Yii::$app->github->client();
+
+		$api = new \Github\Api\Issue($client);
+		list($toUser, $toRepo) = explode('/', $toRepository);
+		$newIssue = $api->create($toUser, $toRepo, [
+			'title' => $issue['title'],
+			'body' => 'This issue has originally been reported by @' . $issue['user']['login'] . ' at ' . $issue['html_url'] . ".\n"
+				. 'Moved here by @' . $sender['login'] . '.'
+				. "\n\n-----\n\n"
+				. $issue['body'],
+			'labels' => array_map(function($i) { return $i['name']; }, $issue['labels']),
+		]);
+		Yii::info("moved issue {$fromRepository['owner']['login']}/{$fromRepository['name']}#{$issue['number']} to {$toRepository}#{$newIssue['number']}.", 'action');
+		sleep(5); // wait 5sec before reply to have github issue events in order
+		$this->replyWithComment($fromRepository, $issue, 'Issue moved to ' . $newIssue['html_url']);
+		sleep(5); // wait 5sec before reply to have github issue events in order
+		$this->closeIssue($fromRepository, $issue);
+	}
 }
