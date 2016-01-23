@@ -6,6 +6,11 @@ defined('YII_ENV') or define('YII_ENV', 'prod');
 require(__DIR__ . '/../vendor/autoload.php');
 require(__DIR__ . '/../vendor/yiisoft/yii2/Yii.php');
 
+// config
+$config = require(__DIR__ . '/../config.php');
+if (is_file($localConfig = __DIR__ . '/../config.local.php')) {
+	$config = array_merge($config, require($localConfig));
+}
 
 
 $application = new yii\web\Application([
