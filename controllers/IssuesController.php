@@ -12,6 +12,7 @@ use Yii;
 use yii\filters\VerbFilter;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
+use yii\web\Response;
 
 class IssuesController extends Controller
 {
@@ -29,6 +30,8 @@ class IssuesController extends Controller
 
 	public function actionIndex()
 	{
+		\Yii::$app->response->format = Response::FORMAT_JSON;
+
 		// content of $params should look like here: https://developer.github.com/v3/activity/events/types/#issuesevent
 		$params = \Yii::$app->request->bodyParams;
 		$event = \Yii::$app->request->headers->get('X-Github-Event');
