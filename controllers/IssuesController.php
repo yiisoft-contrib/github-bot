@@ -91,6 +91,7 @@ class IssuesController extends Controller
 		$api->comments()->create($repository['owner']['login'], $repository['name'], $issue['number'], [
 			'body' => $comment,
 		]);
+		Yii::info('commented on issue ' . implode('/', $repository['owner']['login'], $repository['name']) . '#' . $issue['number'], 'action');
 	}
 
 	protected function closeIssue($repository, $issue)
@@ -102,6 +103,7 @@ class IssuesController extends Controller
 		$api->update($repository['owner']['login'], $repository['name'], $issue['number'], [
 			'state' => 'closed',
 		]);
+		Yii::info('closed issue ' . implode('/', $repository['owner']['login'], $repository['name']) . '#' . $issue['number'], 'action');
 	}
 
 }

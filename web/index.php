@@ -60,6 +60,12 @@ $application = new yii\web\Application([
 				],
 				[
 					'class' => 'yii\log\FileTarget',
+					'logFile' => '@app/logs/actions.log',
+					'categories' => ['action'],
+					'logVars' => [],
+				],
+				[
+					'class' => 'yii\log\FileTarget',
 					'logFile' => '@app/logs/error.log',
 					'levels' => ['error', 'warning'],
 					'except' => ['yii\web\HttpException:404'],
