@@ -10,14 +10,27 @@ namespace app\commands;
 
 use Github\Api\Repo;
 use Yii;
+use yii\base\Exception;
 use yii\console\Controller;
 use yii\helpers\Console;
 
 class GithubController extends  Controller
 {
-	public $hooks = [
-		'issues' => 'http://bot.cebe.cc/index.php?r=issues',
-	];
+	public function init()
+	{
+		parent::init();
+		if (empty(Yii::$app->params['hook_secret'])) {
+			throw new Exception('Config param "hook_secret" is not configured!');
+		}
+	}
+
+	public function hooks()
+	{
+		$base = rtrim('/', Yii::$app->params['webUrl']);
+		return [
+			'issues' => $base . '/index.php?r=issues',
+		];
+	}
 
 	public function actionRegister()
 	{
@@ -26,7 +39,7 @@ class GithubController extends  Controller
 
 		// create hooks:
 		foreach(Yii::$app->params['repositories'] as $urepo) {
-			foreach($this->hooks as $hookName => $hookUrl) {
+			foreach($this->hooks() as $hookName => $hookUrl) {
 
 				$this->stdout("registering ");
 				$this->stdout("$hookName", Console::BOLD);
@@ -53,7 +66,7 @@ class GithubController extends  Controller
 					'config' => [
 						'url' => $hookUrl,
 						'content_type' => 'json',
-						//'secret' =>  // TODO
+						'secret' => Yii::$app->params['hook_secret'],
 					],
 					'events' => ['issues'],
 					'active' => true,
@@ -78,7 +91,7 @@ class GithubController extends  Controller
 
 		// create hooks:
 		foreach(Yii::$app->params['repositories'] as $urepo) {
-			foreach($this->hooks as $hookName => $hookUrl) {
+			foreach($this->hooks() as $hookName => $hookUrl) {
 
 				$this->stdout("un-registering ");
 				$this->stdout("$hookName", Console::BOLD);

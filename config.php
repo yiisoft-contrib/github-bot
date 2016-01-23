@@ -2,16 +2,19 @@
 
 return [
 
+	// the url that points to the web/ folder
+	'webUrl' => 'http://bot.cebe.cc/',
+
 	// SET THIS IN config.local.php
 	// needs the following permissions:
 	// - repo
 	// - admin:repo_hook
-	// - admin:org_hook
 	'github_token' => '',
 
-	// TODO implement
+	// a secret to verify hooks are really coming from github
 	'hook_secret' => '',
 
+	// the repositories to install hooks for
 	'repositories' => [
 		'cebe-test/testrepo',
 		'cebe-test/testrepo-redis',

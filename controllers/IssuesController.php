@@ -40,6 +40,8 @@ class IssuesController extends Controller
 			throw new BadRequestHttpException('Event request without X-Github-Event header.');
 		}
 
+		Yii::$app->github->verifyRequest(Yii::$app->request->rawBody);
+
 		if ($event === 'ping') {
 			return ['success' => true, 'action' => 'pong'];
 		}
@@ -73,8 +75,11 @@ class IssuesController extends Controller
 		switch($action['action'])
 		{
 			case 'comment':
+				// wait 5sec before reply to have github issue events in order
+				sleep(5);
 				$this->replyWithComment($params['repository'], $params['issue'], $action['comment']);
 				if ($action['close']) {
+					sleep(5);
 					$this->closeIssue($params['repository'], $params['issue']);
 				}
 				break;
