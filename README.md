@@ -5,7 +5,8 @@ This is a bot that helps with automated comments on github issues.
 ## Features
 
 - Reply to issues when a label is added. E.g. add a comment to tell user to use forum instead when an issues does not contain a bug report or feature request.
-- WIP: move issues to other repositories, if the issue is specific to an extension.
+- move issues to other repositories, if the issue is specific to an extension.
+  This action will be triggered by adding a label to an issue which is not closed (allowing to edit labels after an issue has been closed).
 
 ## Installation
 
