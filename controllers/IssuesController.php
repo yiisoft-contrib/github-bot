@@ -83,6 +83,10 @@ class IssuesController extends Controller
 				}
 				break;
 			case 'move':
+				if ($params['issue']['state'] !== 'open') {
+					// do not move issue if it is closed, allow editing labels in closed state
+					break;
+				}
 				sleep(5); // wait 5sec before reply to have github issue events in order
 				$this->moveIssue($params['repository'], $action['repo'], $params['issue'], $params['sender']);
 				break;
