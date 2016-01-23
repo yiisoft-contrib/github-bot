@@ -20,7 +20,7 @@ class Github extends Component
 	{
 		// create client
 		$client = new \Github\HttpClient\CachedHttpClient();
-		$client->setCache(new \Github\HttpClient\Cache\FilesystemCache(__DIR__ . '/../tmp/cache'));
+		$client->setCache(new \Github\HttpClient\Cache\FilesystemCache(__DIR__ . '/../tmp/github-cache'));
 		$client = new \Github\Client($client);
 
 		// authenticate

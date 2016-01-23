@@ -16,7 +16,7 @@ use yii\helpers\Console;
 class GithubController extends  Controller
 {
 	public $hooks = [
-		'issues' => 'http://bot.cebe.cc/issues_hook.php',
+		'issues' => 'http://bot.cebe.cc/index.php?r=issues',
 	];
 
 	public function actionRegister()
@@ -39,24 +39,34 @@ class GithubController extends  Controller
 				$api = new Repo($client);
 
 				// check if hook exists
+				$hookId = null;
 				foreach ($api->hooks()->all($user, $repo) as $hook) {
 					if ($hook['name'] == 'web' && isset($hook['config']['url']) && $hook['config']['url'] === $hookUrl) {
-						$this->stdout("already registered, deleting...");
-						$api->hooks()->remove($user, $repo, $hook['id']);
+						$this->stdout("already registered, updating...");
+						$hookId = $hook['id'];
+						break;
 					}
 				}
 
-				$response = $api->hooks()->create($user, $repo, [
+				$params = [
 					'name' => 'web',
 					'config' => [
 						'url' => $hookUrl,
+						'content_type' => 'json',
 						//'secret' =>  // TODO
 					],
 					'events' => ['issues'],
 					'active' => true,
-				]);
-				//print_r($response);
-				$this->stdout("added.\n", Console::FG_GREEN, Console::BOLD);
+				];
+				if ($hookId) {
+					$response = $api->hooks()->update($user, $repo, $hookId, $params);
+					//print_r($response);
+					$this->stdout("updated.\n", Console::FG_GREEN, Console::BOLD);
+				} else {
+					$response = $api->hooks()->create($user, $repo, $params);
+					//print_r($response);
+					$this->stdout("added.\n", Console::FG_GREEN, Console::BOLD);
+				}
 			}
 		}
 	}
