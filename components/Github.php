@@ -45,7 +45,7 @@ class Github extends Component
 		}
 		$secret = Yii::$app->params['hook_secret'];
 		$signHeader = \Yii::$app->request->headers->get('X-Hub-Signature');
-		if (!$signHeader) {
+		if (!$signHeader || strpos($signHeader, '=') === false) {
 			throw new BadRequestHttpException('X-Hub-Signature header is missing.');
 		}
 		list($algo, $hash) = explode('=', $signHeader, 2);
