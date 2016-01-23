@@ -1,0 +1,33 @@
+#!/usr/bin/env php
+<?php
+/**
+ * Yii console bootstrap file.
+ */
+
+defined('YII_DEBUG') or define('YII_DEBUG', true);
+
+require(__DIR__ . '/vendor/autoload.php');
+require(__DIR__ . '/vendor/yiisoft/yii2/Yii.php');
+
+// config
+$config = require(__DIR__ . '/config.php');
+if (is_file($localConfig = __DIR__ . '/config.local.php')) {
+	$config = array_merge($config, require($localConfig));
+}
+
+$application = new yii\console\Application([
+	'id' => 'yii-console',
+	'basePath' => __DIR__,
+	'controllerNamespace' => 'app\commands',
+	'enableCoreCommands' => false,
+	'params' => $config,
+	'vendorPath' => __DIR__ . '/vendor',
+
+	'components' => [
+		'github' => 'app\components\Github',
+	],
+
+]);
+
+$exitCode = $application->run();
+exit($exitCode);

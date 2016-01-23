@@ -1,5 +1,14 @@
 {
+    "name": "cebe/github-bot",
+    "type": "project",
+    "provide": {
+        "bower-asset/jquery": "*",
+        "bower-asset/jquery.inputmask": "*",
+        "bower-asset/punycode": "*",
+        "bower-asset/yii2-pjax": "*"
+    },
     "require": {
-        "knplabs/github-api": "~1.5"
+        "knplabs/github-api": "~1.5",
+        "yiisoft/yii2": "~2.0.6"
     }
 }

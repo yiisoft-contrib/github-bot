@@ -13,8 +13,8 @@ return [
 	'hook_secret' => '',
 
 	'repositories' => [
-		'cebe/testrepo',
-		'cebe/testrepo-redis',
+		'cebe-test/testrepo',
+		'cebe-test/testrepo-redis',
 	],
 
 	// comment on issues that are labeled with a specific label
