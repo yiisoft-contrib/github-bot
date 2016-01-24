@@ -75,10 +75,10 @@ class IssuesController extends Controller
 		switch($action['action'])
 		{
 			case 'comment':
-				sleep(5); // wait 5sec before reply to have github issue events in order
+				sleep(2); // wait 2sec before reply to have github issue events in order
 				$this->replyWithComment($params['repository'], $params['issue'], $action['comment']);
 				if ($action['close']) {
-					sleep(5); // wait 5sec before reply to have github issue events in order
+					sleep(2); // wait 2sec before reply to have github issue events in order
 					$this->closeIssue($params['repository'], $params['issue']);
 				}
 				break;
@@ -87,7 +87,7 @@ class IssuesController extends Controller
 					// do not move issue if it is closed, allow editing labels in closed state
 					break;
 				}
-				sleep(5); // wait 5sec before reply to have github issue events in order
+				sleep(2); // wait 2sec before reply to have github issue events in order
 				$this->moveIssue($params['repository'], $action['repo'], $params['issue'], $params['sender']);
 				break;
 		}
@@ -134,9 +134,9 @@ class IssuesController extends Controller
 			'labels' => array_map(function($i) { return $i['name']; }, $issue['labels']),
 		]);
 		Yii::info("moved issue {$fromRepository['owner']['login']}/{$fromRepository['name']}#{$issue['number']} to {$toRepository}#{$newIssue['number']}.", 'action');
-		sleep(5); // wait 5sec before reply to have github issue events in order
+		sleep(2); // wait 2sec before reply to have github issue events in order
 		$this->replyWithComment($fromRepository, $issue, 'Issue moved to ' . $newIssue['html_url']);
-		sleep(5); // wait 5sec before reply to have github issue events in order
+		sleep(2); // wait 2sec before reply to have github issue events in order
 		$this->closeIssue($fromRepository, $issue);
 	}
 }
