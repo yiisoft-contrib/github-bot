@@ -36,6 +36,8 @@ return [
 			'action' => 'comment',
 			'label' => 'question',
 			'comment' => <<<COMMENT
+_This is an automated comment, triggered by adding the label `question`._
+			
 Please note, that the GitHub Issue Tracker is for bug reports and feature requests only.
 
 We are happy to help you on the [support forum](http://www.yiiframework.com/forum/), on [IRC](http://www.yiiframework.com/chat/) (#yii on freenode), or [Gitter](https://gitter.im/yiisoft/yii2).
