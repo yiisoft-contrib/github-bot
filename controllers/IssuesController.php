@@ -121,7 +121,7 @@ class IssuesController extends Controller
 	protected function moveIssue($fromRepository, $toRepository, $issue, $sender)
 	{
 		// do not move issue if from and to repo are the same
-		if ($fromRepository === $toRepository) {
+		if ("{$fromRepository['owner']['login']}/{$fromRepository['name']}" === $toRepository) {
 			Yii::warning("did NOT move issue {$fromRepository['owner']['login']}/{$fromRepository['name']}#{$issue['number']} to {$toRepository}.", 'action');
 			return;
 		}
