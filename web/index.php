@@ -76,7 +76,7 @@ $application = new yii\web\Application([
 					'class' => 'yii\log\FileTarget',
 					'logFile' => '@app/logs/error.log',
 					'levels' => ['error', 'warning'],
-					'except' => ['yii\web\HttpException:404'],
+					'except' => ['yii\web\HttpException:404', 'action'],
 				],
 			],
 		],

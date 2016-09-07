@@ -29,6 +29,9 @@ class Github extends Component
 		if (empty(Yii::$app->params['github_token'])) {
 			throw new Exception('Config param "github_token" is not configured!');
 		}
+		if (empty(Yii::$app->params['github_username'])) {
+			throw new Exception('Config param "github_username" is not configured!');
+		}
 
 		// authenticate
 		$client->authenticate(Yii::$app->params['github_token'], '', \Github\Client::AUTH_HTTP_TOKEN);

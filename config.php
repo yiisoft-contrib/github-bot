@@ -10,6 +10,7 @@ return [
 	// - repo
 	// - admin:repo_hook
 	'github_token' => '',
+	'github_username' => '',
 
 	// a secret to verify hooks are really coming from github
 	'hook_secret' => '',

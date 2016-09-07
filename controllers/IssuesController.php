@@ -50,6 +50,11 @@ class IssuesController extends Controller
 			throw new BadRequestHttpException('Only issues events should be deployed here.');
 		}
 
+		if ($event['sender']['login'] === Yii::$app->params['github_username']) {
+			\Yii::warning('ignoring event triggered by myself.');
+			return ['success' => true, 'action' => 'ignored'];
+		}
+
 		switch($params['action'])
 		{
 			case 'labeled':
@@ -120,9 +125,14 @@ class IssuesController extends Controller
 
 	protected function moveIssue($fromRepository, $toRepository, $issue, $sender)
 	{
-		// do not move issue if from and to repo are the same
+		// do not move issue if from and to repo are the same (prevent loops)
 		if ("{$fromRepository['owner']['login']}/{$fromRepository['name']}" === $toRepository) {
 			Yii::warning("did NOT move issue {$fromRepository['owner']['login']}/{$fromRepository['name']}#{$issue['number']} to {$toRepository}.", 'action');
+			return;
+		}
+		// also do not move issues created by the bot itself (prevent loops)
+		if ($issue['user']['login'] === Yii::$app->params['github_username']) {
+			Yii::warning("did NOT move issue {$fromRepository['owner']['login']}/{$fromRepository['name']}#{$issue['number']} to {$toRepository} because it was created by me.", 'action');
 			return;
 		}
 
@@ -142,7 +152,7 @@ class IssuesController extends Controller
 		Yii::info("moved issue {$fromRepository['owner']['login']}/{$fromRepository['name']}#{$issue['number']} to {$toRepository}#{$newIssue['number']}.", 'action');
 		sleep(2); // wait 2sec before reply to have github issue events in order
 		$this->replyWithComment($fromRepository, $issue, 'Issue moved to ' . $newIssue['html_url']);
-		sleep(1); // wait 2sec before reply to have github issue events in order
+		sleep(2); // wait 2sec before reply to have github issue events in order
 		$this->closeIssue($fromRepository, $issue);
 	}
 }
