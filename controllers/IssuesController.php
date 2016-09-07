@@ -120,6 +120,12 @@ class IssuesController extends Controller
 
 	protected function moveIssue($fromRepository, $toRepository, $issue, $sender)
 	{
+		// do not move issue if from and to repo are the same
+		if ($fromRepository === $toRepository) {
+			Yii::warning("did NOT move issue {$fromRepository['owner']['login']}/{$fromRepository['name']}#{$issue['number']} to {$toRepository}.", 'action');
+			return;
+		}
+
 		/** @var $client \Github\Client */
 		$client = Yii::$app->github->client();
 
@@ -136,7 +142,7 @@ class IssuesController extends Controller
 		Yii::info("moved issue {$fromRepository['owner']['login']}/{$fromRepository['name']}#{$issue['number']} to {$toRepository}#{$newIssue['number']}.", 'action');
 		sleep(2); // wait 2sec before reply to have github issue events in order
 		$this->replyWithComment($fromRepository, $issue, 'Issue moved to ' . $newIssue['html_url']);
-		sleep(2); // wait 2sec before reply to have github issue events in order
+		sleep(1); // wait 2sec before reply to have github issue events in order
 		$this->closeIssue($fromRepository, $issue);
 	}
 }
