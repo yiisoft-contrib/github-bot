@@ -50,7 +50,7 @@ class IssuesController extends Controller
 			throw new BadRequestHttpException('Only issues events should be deployed here.');
 		}
 
-		if ($event['sender']['login'] === Yii::$app->params['github_username']) {
+		if ($params['sender']['login'] === Yii::$app->params['github_username']) {
 			\Yii::warning('ignoring event triggered by myself.');
 			return ['success' => true, 'action' => 'ignored'];
 		}
