@@ -32,13 +32,18 @@ class GithubController extends  Controller
 		];
 	}
 
-	public function actionRegister()
+	public function actionRegister(array $limitRepos = [])
 	{
 		/** @var $client \Github\Client */
 		$client = Yii::$app->github->client();
 
+		$repositories = Yii::$app->params['repositories'];
+		if (!empty($limitRepos)) {
+			$repositories = array_intersect($limitRepos, $repositories);
+		}
+
 		// create hooks:
-		foreach(Yii::$app->params['repositories'] as $urepo) {
+		foreach($repositories as $urepo) {
 			foreach($this->hooks() as $hookName => $hookUrl) {
 
 				$this->stdout("registering ");
@@ -84,13 +89,18 @@ class GithubController extends  Controller
 		}
 	}
 
-	public function actionUnRegister()
+	public function actionUnRegister(array $limitRepos = [])
 	{
 		/** @var $client \Github\Client */
 		$client = Yii::$app->github->client();
 
-		// create hooks:
-		foreach(Yii::$app->params['repositories'] as $urepo) {
+		$repositories = Yii::$app->params['repositories'];
+		if (!empty($limitRepos)) {
+			$repositories = array_intersect($limitRepos, $repositories);
+		}
+
+		// remove hooks:
+		foreach($repositories as $urepo) {
 			foreach($this->hooks() as $hookName => $hookUrl) {
 
 				$this->stdout("un-registering ");
