@@ -27,15 +27,19 @@ return [
 	// - comment: what to post
 	// - close: whether to close the issue after commenting
 
-	// move issues to other repos based on labels
-	// - action: "move"
+    // move issues to other repos based on labels
+    // - action: "move"
 	// - label: on which label to react
 	// - repo: the repo to move the issue to
 
 	'actions' => [
+
+        /**
+         * Questions
+         */
 		[
-			'action' => 'comment',
 			'label' => 'question',
+			'action' => 'comment',
 			'comment' => <<<COMMENT
 _This is an automated comment, triggered by adding the label `question`._
 			
@@ -51,99 +55,102 @@ COMMENT
 			'close' => true,
 		],
 
+        /**
+         * Extensions
+         */
 		[
-			'action' => 'move',
 			'label' => 'ext:apidoc',
+			'action' => 'move',
 			'repo' => 'yiisoft/yii2-apidoc',
 		],
 
 		[
-			'action' => 'move',
 			'label' => 'ext:authclient',
+			'action' => 'move',
 			'repo' => 'yiisoft/yii2-authclient',
 		],
 
 		[
-			'action' => 'move',
 			'label' => 'ext:bootstrap',
+			'action' => 'move',
 			'repo' => 'yiisoft/yii2-bootstrap',
 		],
 
 		[
-			'action' => 'move',
 			'label' => 'ext:codeception',
+			'action' => 'move',
 			'repo' => 'yiisoft/yii2-codeception',
 		],
 
 		[
-			'action' => 'move',
 			'label' => 'ext:debug',
+			'action' => 'move',
 			'repo' => 'yiisoft/yii2-debug',
 		],
 
 		[
-			'action' => 'move',
 			'label' => 'ext:elasticsearch',
+			'action' => 'move',
 			'repo' => 'yiisoft/yii2-elasticsearch',
 		],
 
 		[
-			'action' => 'move',
 			'label' => 'ext:faker',
+			'action' => 'move',
 			'repo' => 'yiisoft/yii2-faker',
 		],
 
 		[
-			'action' => 'move',
 			'label' => 'ext:gii',
+			'action' => 'move',
 			'repo' => 'yiisoft/yii2-gii',
 		],
 
 		[
-			'action' => 'move',
 			'label' => 'ext:imagine',
+			'action' => 'move',
 			'repo' => 'yiisoft/yii2-imagine',
 		],
 
 		[
-			'action' => 'move',
 			'label' => 'ext:jui',
+			'action' => 'move',
 			'repo' => 'yiisoft/yii2-jui',
 		],
 
 		[
-			'action' => 'move',
 			'label' => 'ext:mongodb',
+			'action' => 'move',
 			'repo' => 'yiisoft/yii2-mongodb',
 		],
 
 		[
-			'action' => 'move',
 			'label' => 'ext:redis',
+			'action' => 'move',
 			'repo' => 'yiisoft/yii2-redis',
 		],
 
 		[
-			'action' => 'move',
 			'label' => 'ext:sphinx',
+			'action' => 'move',
 			'repo' => 'yiisoft/yii2-sphinx',
 		],
 
 		[
-			'action' => 'move',
 			'label' => 'ext:swiftmailer',
+			'action' => 'move',
 			'repo' => 'yiisoft/yii2-swiftmailer',
 		],
 
 		[
-			'action' => 'move',
 			'label' => 'ext:twig',
+			'action' => 'move',
 			'repo' => 'yiisoft/yii2-twig',
 		],
 
 		[
-			'action' => 'move',
 			'label' => 'ext:smarty',
+			'action' => 'move',
 			'repo' => 'yiisoft/yii2-smarty',
 		],
 
