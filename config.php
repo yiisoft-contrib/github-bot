@@ -27,16 +27,16 @@ return [
 	// - comment: what to post
 	// - close: whether to close the issue after commenting
 
-    // move issues to other repos based on labels
-    // - action: "move"
+	// move issues to other repos based on labels
+	// - action: "move"
 	// - label: on which label to react
 	// - repo: the repo to move the issue to
 
 	'actions' => [
 
-        /**
-         * Questions
-         */
+		/**
+		 * Questions
+		 */
 		[
 			'label' => 'question',
 			'action' => 'comment',
@@ -55,9 +55,9 @@ COMMENT
 			'close' => true,
 		],
 
-        /**
-         * Extensions
-         */
+		/**
+		 * Extensions
+		 */
 		[
 			'label' => 'ext:apidoc',
 			'action' => 'move',
