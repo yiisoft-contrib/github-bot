@@ -47,7 +47,7 @@ We advise you to use our other community driven resources:
 * [The Definitive Guide to Yii](http://www.yiiframework.com/doc-2.0/guide-index.html)
 
 If you are confident that there is a bug in the framework, feel free to
-provide information on how to reproduce the issue. This issue will be closed for now.
+provide information on how to reproduce it. This issue will be closed for now.
 
 _This is an automated comment, triggered by adding the label `question`._
 COMMENT
