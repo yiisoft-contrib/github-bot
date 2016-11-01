@@ -37,15 +37,17 @@ return [
 			'action' => 'comment',
 			'label' => 'question',
 			'comment' => <<<COMMENT
+Thank you for your question in our issue tracker. In order for this issue tracker to be effective,
+we ask our community to use our online resources specifically designed for support:
+* [our support forum](http://www.yiiframework.com/forum/)
+* [our IRC chat](http://www.yiiframework.com/chat/)
+* [our Gitter](https://gitter.im/yiisoft/yii2)
+* [our guide](http://www.yiiframework.com/doc-2.0/guide-index.html)
+
+If you are confident that there really is a bug in the framework, feel free to
+provide information on how to reproduce the issue. This issue will be closed for now.
+
 _This is an automated comment, triggered by adding the label `question`._
-			
-Please note, that the GitHub Issue Tracker is for bug reports and feature requests only.
-
-We are happy to help you on the [support forum](http://www.yiiframework.com/forum/), on [IRC](http://www.yiiframework.com/chat/) (#yii on freenode), or [Gitter](https://gitter.im/yiisoft/yii2).
-
-Please use one of the above mentioned resources to discuss the problem.
-If the result of the discussion turns out that there really is a bug in the framework, feel free to
-come back and provide information on how to reproduce the issue. This issue will be closed for now.
 COMMENT
 ,
 			'close' => true,
