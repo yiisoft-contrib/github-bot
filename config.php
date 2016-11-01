@@ -37,14 +37,16 @@ return [
 			'action' => 'comment',
 			'label' => 'question',
 			'comment' => <<<COMMENT
-Thank you for your question in our issue tracker. In order for this issue tracker to be effective,
-we ask our community to use our online resources specifically designed for support:
-* [our support forum](http://www.yiiframework.com/forum/)
-* [our IRC chat](http://www.yiiframework.com/chat/)
-* [our Gitter](https://gitter.im/yiisoft/yii2)
-* [our guide](http://www.yiiframework.com/doc-2.0/guide-index.html)
+Thank you for your question.
+In order for this issue tracker to be effective, it should only contain bug reports and feature requests.
 
-If you are confident that there really is a bug in the framework, feel free to
+We advise you to use our other community driven resources:
+* [The support forum](http://www.yiiframework.com/forum/)
+* [The IRC chat room](http://www.yiiframework.com/chat/)
+* [The Gitter chat room](https://gitter.im/yiisoft/yii2)
+* [The Definitive Guide to Yii](http://www.yiiframework.com/doc-2.0/guide-index.html)
+
+If you are confident that there is a bug in the framework, feel free to
 provide information on how to reproduce the issue. This issue will be closed for now.
 
 _This is an automated comment, triggered by adding the label `question`._
