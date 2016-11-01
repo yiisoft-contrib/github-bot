@@ -1,5 +1,7 @@
 <?php
 
+
+
 return [
 
 	// the url that points to the web/ folder
@@ -33,7 +35,147 @@ return [
 	// - repo: the repo to move the issue to
 
 	'actions' => [
-		[
+
+        /**
+         * Status: Need more info
+         */
+        [
+			'label' => 'status:need more info',
+			'comment' => <<<COMMENT
+Thanks for posting your issue in our issue tracker. 
+In order to properly assist you, we need more information. 
+
+Can you supply us with answers to the following questions:
+* When does the issue occur?
+* What do you see?
+* What was the expected result?
+* (optional) Can you supply us with a stacktrace?
+* (optional) How could a unit test look like proving your issue?
+
+Thanks!
+
+_This is an automated comment, triggered by adding the label `status:need more info`._
+COMMENT
+			,
+        ],
+
+        [
+			'label' => 'status:need more info (expired)',
+			'comment' => <<<COMMENT
+It has been 2 or more weeks with no response on our request for more information. In order for our issue tracker
+to be effective, we are closing this issue. 
+
+If you want it to be reopened again, feel free to supply us with the requested information.
+
+Thanks!
+
+_This is an automated comment, triggered by adding the label `status:need more info (expired)`._
+COMMENT
+			,
+			'close' => true,
+        ],
+
+        /**
+         * PRs: closed
+         */
+        [
+            'label' => 'pr:too many objectives',
+            'comment' => <<<COMMENT
+Thank you for putting effort in the improvement of our framework. 
+We have reviewed your PR.
+
+We came to the conclusion that this PR in it's current form is covering too many different objectives.
+The bigger a PR is, the more difficult it is to properly assess. 
+
+Please divide your PR in separate PR's with clear objectives.
+
+Thanks!
+
+_This is an automated comment, triggered by adding the label `status:need more info (expired)`._
+COMMENT
+            ,
+            'close' => true,
+        ],
+
+        /**
+         * PRs: kept open
+         */
+        [
+            'label' => 'pr:request for unit tests',
+            'comment' => <<<COMMENT
+Thank you for putting effort in the improvement of our framework. We have reviewed your PR.
+
+In order for the framework and your solution to remain stable in the future, we have a 
+unit test requirement in place. Therefore we can only accept your  PR if it is covered by unit tests. 
+
+Could you add these please?
+
+Thanks!
+
+ps. If you have any questions about the creation of unit tests? Don't hesitate to ask support.
+More information about [unit tests](http://www.yiiframework.com/doc-2.0/guide-test-unit.html)
+
+_This is an automated comment, triggered by adding the label `status:need more info (expired)`._
+COMMENT
+            ,
+        ],
+
+        [
+            'label' => 'pr:loss performance',
+            'comment' => <<<COMMENT
+Thank you for putting effort in the improvement of our framework. 
+We have reviewed your PR.
+
+We came to the conclusion that this PR in current form is going too much at cost of the performance
+of the framework. Speed is an important core value for us. 
+
+Please update your PR so that the performance of the framework is not compromised.
+
+Thanks!
+
+_This is an automated comment, triggered by adding the label `status:need more info (expired)`._
+COMMENT
+            ,
+        ],
+
+        [
+            'label' => 'pr:missing usecase',
+            'comment' => <<<COMMENT
+Thank you for putting effort in the improvement of our framework. 
+We have reviewed your PR.
+
+Unfortunately a usecase is missing. This is required to get a better understanding of the PR.
+It will help us to assess the necessity and applicability in the framework.
+
+Could you supply us with a usecase please? 
+
+Thanks!
+
+_This is an automated comment, triggered by adding the label `status:need more info (expired)`._
+COMMENT
+            ,
+        ],
+
+        [
+            'label' => 'pr:request for 1 commit',
+            'comment' => <<<COMMENT
+Thank you for putting effort in the improvement of our framework. 
+We have reviewed your PR.
+
+We have noticed that this PR contains multiple commits. In order to keep our GIT history clean,
+we are asking you to reset your commits to 1 commit. This can be done as follows:
+ * soft reset your branch to the last commit of the base branch
+ * recommit all your changes
+ * execute a force push to your github fork
+
+Thanks!
+
+_This is an automated comment, triggered by adding the label `status:need more info (expired)`._
+COMMENT
+            ,
+        ],
+
+        [
 			'action' => 'comment',
 			'label' => 'question',
 			'comment' => <<<COMMENT
