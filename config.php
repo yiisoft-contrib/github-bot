@@ -41,15 +41,19 @@ return [
 			'label' => 'question',
 			'action' => 'comment',
 			'comment' => <<<COMMENT
+Thank you for your question.
+In order for this issue tracker to be effective, it should only contain bug reports and feature requests.
+
+We advise you to use our other community driven resources:
+* [The support forum](http://www.yiiframework.com/forum/)
+* [The IRC chat room](http://www.yiiframework.com/chat/)
+* [The Gitter chat room](https://gitter.im/yiisoft/yii2)
+* [The Definitive Guide to Yii](http://www.yiiframework.com/doc-2.0/guide-index.html)
+
+If you are confident that there is a bug in the framework, feel free to
+provide information on how to reproduce it. This issue will be closed for now.
+
 _This is an automated comment, triggered by adding the label `question`._
-			
-Please note, that the GitHub Issue Tracker is for bug reports and feature requests only.
-
-We are happy to help you on the [support forum](http://www.yiiframework.com/forum/), on [IRC](http://www.yiiframework.com/chat/) (#yii on freenode), or [Gitter](https://gitter.im/yiisoft/yii2).
-
-Please use one of the above mentioned resources to discuss the problem.
-If the result of the discussion turns out that there really is a bug in the framework, feel free to
-come back and provide information on how to reproduce the issue. This issue will be closed for now.
 COMMENT
 ,
 			'close' => true,
