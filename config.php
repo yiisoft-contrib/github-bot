@@ -38,11 +38,12 @@ return [
 	 * Questions
 	 */
 
-        /**
-         * Status: Need more info
-         */
-        [
+		/**
+		 * Status: Need more info
+		 */
+		[
 			'label' => 'status:need more info',
+			'action' => 'comment',
 			'comment' => <<<COMMENT
 Thanks for posting in our issue tracker.
 In order to properly assist you, we need additional information:
@@ -58,10 +59,11 @@ Thanks!
 _This is an automated comment, triggered by adding the label `status:need more info`._
 COMMENT
 			,
-        ],
+		],
 
-        [
+		[
 			'label' => 'expired',
+			'action' => 'comment',
 			'comment' => <<<COMMENT
 It has been 2 or more weeks with no response on our request for more information. 
 In order for our issue tracker to be effective, we are closing this issue. 
@@ -74,14 +76,15 @@ _This is an automated comment, triggered by adding the label `expired`._
 COMMENT
 			,
 			'close' => true,
-        ],
+		],
 
-        /**
-         * PRs: closed
-         */
-        [
-            'label' => 'pr:too many objectives',
-            'comment' => <<<COMMENT
+		/**
+		 * PRs: closed
+		 */
+		[
+			'label' => 'pr:too many objectives',
+			'action' => 'comment',
+			'comment' => <<<COMMENT
 Thank you for putting effort in the improvement of the Yii framework. 
 We have reviewed your pull request.
 
@@ -94,16 +97,17 @@ Thanks!
 
 _This is an automated comment, triggered by adding the label `pr:too many objectives`._
 COMMENT
-            ,
-            'close' => true,
-        ],
+			,
+			'close' => true,
+		],
 
-        /**
-         * PRs: kept open
-         */
-        [
-            'label' => 'pr:request for unit tests',
-            'comment' => <<<COMMENT
+		/**
+		 * PRs: kept open
+		 */
+		[
+			'label' => 'pr:request for unit tests',
+			'action' => 'comment',
+			'comment' => <<<COMMENT
 Thank you for putting effort in the improvement of the Yii framework. 
 We have reviewed your pull request.
 
@@ -119,14 +123,15 @@ p.s. If you have any questions about the creation of unit tests? Don't hesitate 
 
 _This is an automated comment, triggered by adding the label `pr:request for unit tests`._
 COMMENT
-            ,
-        ],
+			,
+		],
 
 
 
-        [
-            'label' => 'pr:missing usecase',
-            'comment' => <<<COMMENT
+		[
+			'label' => 'pr:missing usecase',
+			'action' => 'comment',
+			'comment' => <<<COMMENT
 Thank you for putting effort in the improvement of the Yii framework. 
 We have reviewed your pull request.
 
@@ -139,13 +144,13 @@ Thanks!
 
 _This is an automated comment, triggered by adding the label `pr:missing usecase`._
 COMMENT
-            ,
-        ],
+			,
+		],
 
 
-        [
-			'action' => 'comment',
+		[
 			'label' => 'question',
+			'action' => 'comment',
 			'comment' => <<<COMMENT
 Thank you for your question.
 In order for this issue tracker to be effective, it should only contain bug reports and feature requests.
