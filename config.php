@@ -65,8 +65,8 @@ COMMENT
 			'label' => 'expired',
 			'action' => 'comment',
 			'comment' => <<<COMMENT
-It has been 2 or more weeks with no response on our request for more information. 
-In order for our issue tracker to be effective, we are closing this issue. 
+It has been 2 or more weeks with no response on our request for more information.
+In order for our issue tracker to be effective, we are closing this issue.
 
 If you want it to be reopened again, feel free to supply us with the requested information.
 
@@ -89,7 +89,7 @@ Thank you for putting effort in the improvement of the Yii framework.
 We have reviewed your pull request.
 
 We came to the conclusion that this pull request in it's current form is covering too many different objectives.
-The bigger it is, the more difficult it is to properly assess. 
+The bigger it is, the more difficult it is to review and accept it. 
 
 Please divide your pull request into separate pull requests with clear objectives.
 
@@ -111,15 +111,13 @@ COMMENT
 Thank you for putting effort in the improvement of the Yii framework. 
 We have reviewed your pull request.
 
-In order for the framework and your solution to remain stable in the future, 
-we have a unit test requirement in place. Therefore we can only accept your pull request if it is covered by unit tests. 
+In order for the framework and your solution to remain stable in the future, we have a unit test requirement in place. Therefore we can only accept your pull request if it is covered by unit tests. 
 
 Could you add these please?
 
 Thanks!
 
-p.s. If you have any questions about the creation of unit tests? Don't hesitate to ask support.
-[More information about unit tests](http://www.yiiframework.com/doc-2.0/guide-test-unit.html)
+P.S. If you have any questions about the creation of unit tests? Don't hesitate to ask for support. [More information about unit tests](http://www.yiiframework.com/doc-2.0/guide-test-unit.html)
 
 _This is an automated comment, triggered by adding the label `pr:request for unit tests`._
 COMMENT
@@ -135,10 +133,9 @@ COMMENT
 Thank you for putting effort in the improvement of the Yii framework. 
 We have reviewed your pull request.
 
-Unfortunately an usecase is missing. This is required to get a better understanding of the pull request.
-It will help us to assess the necessity and applicability in the framework.
+Unfortunately a use case is missing. It is required to get a better understanding of the pull request and hels us to get the necessity and applicability of the suggested change to the framework.
 
-Could you supply us with a usecase please? Please be as detailed as possible and show some code!
+Could you supply us with a use case please? Please be as detailed as possible and show some code!
 
 Thanks!
 
@@ -155,14 +152,13 @@ COMMENT
 Thank you for your question.
 In order for this issue tracker to be effective, it should only contain bug reports and feature requests.
 
-We advise you to use our other community driven resources:
+We advise you to use our community driven resources:
 * [The support forum](http://www.yiiframework.com/forum/)
 * [The IRC chat room](http://www.yiiframework.com/chat/)
 * [The Gitter chat room](https://gitter.im/yiisoft/yii2)
 * [The Definitive Guide to Yii](http://www.yiiframework.com/doc-2.0/guide-index.html)
 
-If you are confident that there is a bug in the framework, feel free to
-provide information on how to reproduce it. This issue will be closed for now.
+If you are confident that there is a bug in the framework, feel free to provide information on how to reproduce it. This issue will be closed for now.
 
 _This is an automated comment, triggered by adding the label `question`._
 COMMENT
