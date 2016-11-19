@@ -13,6 +13,7 @@ use yii\base\Component;
 use yii\base\Exception;
 use yii\base\Security;
 use yii\web\BadRequestHttpException;
+use yiiunit\extensions\githubbot\mocks\CachedHttpClientMock;
 
 class Github extends Component
 {
@@ -22,7 +23,7 @@ class Github extends Component
 	public function client()
 	{
 		// create client
-		$client = new \Github\HttpClient\CachedHttpClient();
+        $client = YII_ENV_TEST ? new CachedHttpClientMock() : new \Github\HttpClient\CachedHttpClient();
 		$client->setCache(new \Github\HttpClient\Cache\FilesystemCache(__DIR__ . '/../tmp/github-cache'));
 		$client = new \Github\Client($client);
 

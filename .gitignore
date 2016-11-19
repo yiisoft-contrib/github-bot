@@ -2,3 +2,4 @@
 /config.local.php
 /tmp
 /logs
+/.idea/*

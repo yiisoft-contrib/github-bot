@@ -1,7 +1,7 @@
 <?php
 /**
- * 
- * 
+ *
+ *
  * @author Carsten Brandt <mail@cebe.cc>
  */
 
@@ -13,6 +13,7 @@ use Yii;
 use yii\base\Exception;
 use yii\console\Controller;
 use yii\helpers\Console;
+use yiiunit\extensions\githubbot\mocks\RepoMock;
 
 class GithubController extends  Controller
 {
@@ -54,7 +55,7 @@ class GithubController extends  Controller
 				list($user, $repo) = explode('/', $urepo);
 
 				// https://developer.github.com/v3/repos/hooks/#create-a-hook
-				$api = new Repo($client);
+                $api = YII_ENV_TEST ? new RepoMock($client) : new Repo($client);
 
 				// check if hook exists
 				$hookId = null;
