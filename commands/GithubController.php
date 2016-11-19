@@ -1,7 +1,7 @@
 <?php
 /**
- * 
- * 
+ *
+ *
  * @author Carsten Brandt <mail@cebe.cc>
  */
 
@@ -14,8 +14,11 @@ use yii\base\Exception;
 use yii\console\Controller;
 use yii\helpers\Console;
 
+
 class GithubController extends  Controller
 {
+    const REPO_CLASS = 'Github\Api\Repo';
+
 	public function init()
 	{
 		parent::init();
@@ -54,7 +57,7 @@ class GithubController extends  Controller
 				list($user, $repo) = explode('/', $urepo);
 
 				// https://developer.github.com/v3/repos/hooks/#create-a-hook
-				$api = new Repo($client);
+                $api = Yii::createObject('Github\Api\Repo', [$client]);
 
 				// check if hook exists
 				$hookId = null;
