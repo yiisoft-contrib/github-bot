@@ -13,10 +13,12 @@ use Yii;
 use yii\base\Exception;
 use yii\console\Controller;
 use yii\helpers\Console;
-use yiiunit\extensions\githubbot\mocks\RepoMock;
+
 
 class GithubController extends  Controller
 {
+    const REPO_CLASS = 'Github\Api\Repo';
+
 	public function init()
 	{
 		parent::init();
@@ -55,7 +57,7 @@ class GithubController extends  Controller
 				list($user, $repo) = explode('/', $urepo);
 
 				// https://developer.github.com/v3/repos/hooks/#create-a-hook
-                $api = YII_ENV_TEST ? new RepoMock($client) : new Repo($client);
+                $api = Yii::createObject('Github\Api\Repo', [$client]);
 
 				// check if hook exists
 				$hookId = null;

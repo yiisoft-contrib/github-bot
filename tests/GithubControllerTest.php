@@ -78,6 +78,13 @@ class GithubControllerTest extends TestCase
 
     public function testActionRegister_WrongTokenException()
     {
+        Yii::$container->set('Github\Api\Repo', function ($container, $params, $config) {
+            return new \yiiunit\extensions\githubbot\mocks\RepoMock($params[0]);
+        });
+        Yii::$container->set('Github\HttpClient\CachedHttpClient', function () {
+            return new CachedHttpClientMock();
+        });
+
         $this->mockApplication([
             'components' => [
                 'github' => 'app\components\Github',
@@ -99,6 +106,13 @@ class GithubControllerTest extends TestCase
 
     public function testActionRegister()
     {
+        Yii::$container->set('Github\Api\Repo', function ($container, $params) {
+            return new \yiiunit\extensions\githubbot\mocks\RepoMock($params[0]);
+        });
+        Yii::$container->set('Github\HttpClient\CachedHttpClient', function () {
+            return new CachedHttpClientMock();
+        });
+
         $config = [
             'components' => [
                 'github' => 'app\components\Github',
