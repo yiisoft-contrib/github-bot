@@ -1,6 +1,8 @@
 {
-	"name": "cebe/github-bot",
+	"name": "yiisoft-contrib/github-bot",
+	"description": "This is a github bot that helps with managing issues, used on Yii Framework Github Issues.",
 	"type": "project",
+	"license": "MIT",
 	"provide": {
 		"bower-asset/jquery": "*",
 		"bower-asset/jquery.inputmask": "*",

@@ -26,7 +26,7 @@ install:
 
 script:
   # validate composer.json
-  - composer validate --no-check-lock
+  - composer validate
   # run PHPUnit
   - vendor/bin/phpunit --verbose --coverage-text
 
