@@ -1,21 +1,33 @@
 <?php
-/**
- * 
- * 
- * @author Carsten Brandt <mail@cebe.cc>
- */
 
 namespace app\controllers;
 
-
 use Yii;
+use yii\base\InvalidConfigException;
 use yii\filters\VerbFilter;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\web\Response;
 
+/**
+ * IssuesController handles github webhook requests which have been registered.
+ *
+ * Dependent on the events certain actions are triggered which are configured in the configuration file.
+ *
+ * @author Carsten Brandt <mail@cebe.cc>
+ */
 class IssuesController extends Controller
 {
+	/**
+	 * @see https://developer.github.com/v3/activity/events/types/#issuesevent
+	 */
+	const EVENTNAME_ISSUES = 'issues';
+	/**
+	 * @see https://developer.github.com/v3/activity/events/types/#pullrequestevent
+	 */
+	const EVENTNAME_PULL_REQUEST = 'pull_request';
+
+
 	public function behaviors()
 	{
 		return [
@@ -40,21 +52,27 @@ class IssuesController extends Controller
 			throw new BadRequestHttpException('Event request without X-Github-Event header.');
 		}
 
+		// verify request data to avoid data sent from sources other than github
+		// this will throw BadRequestHttpException on invalid data
 		Yii::$app->github->verifyRequest(Yii::$app->request->rawBody);
 
+		// simple succes for 'ping' event
 		if ($event === 'ping') {
 			return ['success' => true, 'action' => 'pong'];
 		}
 
-		if ($event !== 'issues') {
-			throw new BadRequestHttpException('Only issues events should be deployed here.');
+		// only react on issue and pull request events
+		if ($event !== self::EVENTNAME_ISSUES && $event !== self::EVENTNAME_PULL_REQUEST) {
+			throw new BadRequestHttpException('Only issues and pull_request events should be deployed here.');
 		}
 
+		// ignore events triggered by the bot itself to avoid loops
 		if ($params['sender']['login'] === Yii::$app->params['github_username']) {
 			\Yii::warning('ignoring event triggered by myself.');
 			return ['success' => true, 'action' => 'ignored'];
 		}
 
+		// dependent on the event perform some action
 		switch($params['action'])
 		{
 			case 'labeled':
@@ -63,7 +81,7 @@ class IssuesController extends Controller
 				if (isset($params['label'])) {
 					foreach(\Yii::$app->params['actions'] as $action) {
 						if ($params['label']['name'] == $action['label']) {
-							$this->performAction($action, $params);
+							$this->performActionByLabel($action, $params, $event);
 						}
 					}
 				}
@@ -75,32 +93,43 @@ class IssuesController extends Controller
 		return ['success' => true, 'action' => 'ignored'];
 	}
 
-	protected function performAction($action, $params)
+	protected function performActionByLabel($action, $params, $event)
 	{
 		switch($action['action'])
 		{
 			case 'comment':
-				sleep(2); // wait 2sec before reply to have github issue events in order
-				$this->replyWithComment($params['repository'], $params['issue'], $action['comment']);
-				if ($action['close']) {
-					sleep(2); // wait 2sec before reply to have github issue events in order
-					$this->closeIssue($params['repository'], $params['issue']);
+				// add a comment to issue or pull request
+				if ($event === self::EVENTNAME_ISSUES) {
+					$this->replyWithCommentToIssue($params['repository'], $params['issue'], $action['comment']);
+					if ($action['close']) {
+						$this->closeIssue($params['repository'], $params['issue']);
+					}
+				} elseif($event === self::EVENTNAME_PULL_REQUEST) {
+					$this->replyWithCommentToPr($params['repository'], $params['pull_request'], $action['comment']);
+					if ($action['close']) {
+						$this->closePr($params['repository'], $params['pull_request']);
+					}
 				}
 				break;
 			case 'move':
-				if ($params['issue']['state'] !== 'open') {
-					// do not move issue if it is closed, allow editing labels in closed state
-					break;
+				// move an issue to another repository
+				if ($event !== self::EVENTNAME_ISSUES) {
+					if ($params['issue']['state'] !== 'open') {
+						// do not move issue if it is closed, allow editing labels in closed state
+						break;
+					}
+					$this->moveIssue($params['repository'], $action['repo'], $params['issue'], $params['sender']);
 				}
-				sleep(2); // wait 2sec before reply to have github issue events in order
-				$this->moveIssue($params['repository'], $action['repo'], $params['issue'], $params['sender']);
 				break;
+			default:
+				throw new InvalidConfigException('Action "' . $action['action'] . '" is not supported.');
 		}
-
 	}
 
-	protected function replyWithComment($repository, $issue, $comment)
+	protected function replyWithCommentToIssue($repository, $issue, $comment)
 	{
+		sleep(2); // wait 2sec before reply to have github issue events in order
+
 		/** @var $client \Github\Client */
 		$client = Yii::$app->github->client();
 
@@ -113,6 +142,8 @@ class IssuesController extends Controller
 
 	protected function closeIssue($repository, $issue)
 	{
+		sleep(2); // wait 2sec before reply to have github issue events in order
+
 		/** @var $client \Github\Client */
 		$client = Yii::$app->github->client();
 
@@ -121,6 +152,34 @@ class IssuesController extends Controller
 			'state' => 'closed',
 		]);
 		Yii::info("closed issue {$repository['owner']['login']}/{$repository['name']}#{$issue['number']}.", 'action');
+	}
+
+	protected function replyWithCommentToPr($repository, $pr, $comment)
+	{
+		sleep(2); // wait 2sec before reply to have github issue events in order
+
+		/** @var $client \Github\Client */
+		$client = Yii::$app->github->client();
+
+		$api = new \Github\Api\PullRequest($client);
+		$api->comments()->create($repository['owner']['login'], $repository['name'], $pr['number'], [
+			'body' => $comment,
+		]);
+		Yii::info("commented on pr {$repository['owner']['login']}/{$repository['name']}#{$pr['number']}.", 'action');
+	}
+
+	protected function closePr($repository, $pr)
+	{
+		sleep(2); // wait 2sec before reply to have github issue events in order
+
+		/** @var $client \Github\Client */
+		$client = Yii::$app->github->client();
+
+		$api = new \Github\Api\PullRequest($client);
+		$api->update($repository['owner']['login'], $repository['name'], $pr['number'], [
+			'state' => 'closed',
+		]);
+		Yii::info("closed pr {$repository['owner']['login']}/{$repository['name']}#{$pr['number']}.", 'action');
 	}
 
 	protected function moveIssue($fromRepository, $toRepository, $issue, $sender)
@@ -135,6 +194,8 @@ class IssuesController extends Controller
 			Yii::warning("did NOT move issue {$fromRepository['owner']['login']}/{$fromRepository['name']}#{$issue['number']} to {$toRepository} because it was created by me.", 'action');
 			return;
 		}
+
+		sleep(2); // wait 2sec before reply to have github issue events in order
 
 		/** @var $client \Github\Client */
 		$client = Yii::$app->github->client();
@@ -151,7 +212,7 @@ class IssuesController extends Controller
 		]);
 		Yii::info("moved issue {$fromRepository['owner']['login']}/{$fromRepository['name']}#{$issue['number']} to {$toRepository}#{$newIssue['number']}.", 'action');
 		sleep(2); // wait 2sec before reply to have github issue events in order
-		$this->replyWithComment($fromRepository, $issue, 'Issue moved to ' . $newIssue['html_url']);
+		$this->replyWithCommentToIssue($fromRepository, $issue, 'Issue moved to ' . $newIssue['html_url']);
 		sleep(2); // wait 2sec before reply to have github issue events in order
 		$this->closeIssue($fromRepository, $issue);
 	}

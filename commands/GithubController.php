@@ -1,12 +1,6 @@
 <?php
-/**
- *
- *
- * @author Carsten Brandt <mail@cebe.cc>
- */
 
 namespace app\commands;
-
 
 use Github\Api\Repo;
 use Yii;
@@ -14,7 +8,11 @@ use yii\base\Exception;
 use yii\console\Controller;
 use yii\helpers\Console;
 
-
+/**
+ * This command is used to register the bot for events on the github API.
+ *
+ * @author Carsten Brandt <mail@cebe.cc>
+ */
 class GithubController extends  Controller
 {
 	public function init()
@@ -29,10 +27,24 @@ class GithubController extends  Controller
 	{
 		$base = rtrim(Yii::$app->params['webUrl'], '/');
 		return [
-			'issues' => $base . '/index.php?r=issues',
+			// register for issues events and send them to issues controller
+			// also send pull request events to issues controller
+			'issues,pull_request' => $base . '/index.php?r=issues',
 		];
 	}
 
+	/**
+	 * Register for events on the github API.
+	 *
+	 * The bot user needs Admin privilege to do this. The privilege can be removed
+	 * after register action has run, it only needs Write privilege for normal actions.
+	 *
+	 * Register can safely run multiple times, it does check whether a hook already exists
+	 * and updates the hook instead of adding duplicates.
+	 *
+	 * @param array $limitRepos limit this call to a certain set of repos. This is a comma separated list of repos.
+	 * The default is to run against all configured repos.
+	 */
 	public function actionRegister(array $limitRepos = [])
 	{
 		/** @var $client \Github\Client */
@@ -74,7 +86,7 @@ class GithubController extends  Controller
 						'content_type' => 'json',
 						'secret' => Yii::$app->params['hook_secret'],
 					],
-					'events' => ['issues'],
+					'events' => explode(',', $hookName),
 					'active' => true,
 				];
 				if ($hookId) {

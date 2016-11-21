@@ -1,19 +1,19 @@
 <?php
-/**
- * 
- * 
- * @author Carsten Brandt <mail@cebe.cc>
- */
 
 namespace app\components;
-
 
 use Yii;
 use yii\base\Component;
 use yii\base\Exception;
-use yii\base\Security;
 use yii\web\BadRequestHttpException;
 
+/**
+ * Github client application component.
+ *
+ * Provides a client for the github API via `Yii::$app->github`.
+ *
+ * @author Carsten Brandt <mail@cebe.cc>
+ */
 class Github extends Component
 {
 	/**
@@ -22,7 +22,7 @@ class Github extends Component
 	public function client()
 	{
 		// create client
-		$client = Yii::createObject('Github\HttpClient\CachedHttpClient');
+		$client = Yii::createObject(\Github\HttpClient\CachedHttpClient::class);
 		$client->setCache(new \Github\HttpClient\Cache\FilesystemCache(__DIR__ . '/../tmp/github-cache'));
 		$client = new \Github\Client($client);
 
