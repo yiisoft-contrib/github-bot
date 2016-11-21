@@ -1,14 +1,20 @@
 {
-    "name": "cebe/github-bot",
-    "type": "project",
-    "provide": {
-        "bower-asset/jquery": "*",
-        "bower-asset/jquery.inputmask": "*",
-        "bower-asset/punycode": "*",
-        "bower-asset/yii2-pjax": "*"
-    },
-    "require": {
-        "knplabs/github-api": "~1.5",
-        "yiisoft/yii2": "~2.0.6"
-    }
+	"name": "yiisoft-contrib/github-bot",
+	"description": "This is a github bot that helps with managing issues, used on Yii Framework Github Issues.",
+	"type": "project",
+	"license": "MIT",
+	"provide": {
+		"bower-asset/jquery": "*",
+		"bower-asset/jquery.inputmask": "*",
+		"bower-asset/punycode": "*",
+		"bower-asset/yii2-pjax": "*"
+	},
+	"require": {
+		"php": ">=5.5",
+		"knplabs/github-api": "~1.5",
+		"yiisoft/yii2": "~2.0.6"
+	},
+	"require-dev": {
+		"phpunit/phpunit": "~4.0"
+	}
 }
