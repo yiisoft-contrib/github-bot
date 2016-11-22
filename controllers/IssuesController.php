@@ -161,7 +161,9 @@ class IssuesController extends Controller
 		/** @var $client \Github\Client */
 		$client = Yii::$app->github->client();
 
-		$api = new \Github\Api\PullRequest($client);
+		// create issue instead of PR to be able to post on the normal PR wall
+		// otherwise the comment must be on a file or commit
+		$api = new \Github\Api\Issue($client);
 		$api->comments()->create($repository['owner']['login'], $repository['name'], $pr['number'], [
 			'body' => $comment,
 		]);

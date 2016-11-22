@@ -17,6 +17,8 @@ class CachedHttpClientMock extends CachedHttpClient
 	const EXCEPTION_BAD_CREDENTIALS_MSG = 'Bad credentials';
 	const EXCEPTION_BAD_CREDENTIALS_CODE = 401;
 
+	public $requests = [];
+
 	/**
 	 * @inheritdoc
 	 */
@@ -25,6 +27,15 @@ class CachedHttpClientMock extends CachedHttpClient
 		if (Yii::$app->params['github_token'] !== self::DUMMY_TOKEN) {
 			throw new RuntimeException(self::EXCEPTION_BAD_CREDENTIALS_MSG, self::EXCEPTION_BAD_CREDENTIALS_CODE);
 		} else {
+
+			$this->requests[] = [
+				'path' => $path,
+				'body' => $body,
+				'method' => $httpMethod,
+				'headers' => $headers,
+				'options' => $options,
+			];
+
 			$response = new \Guzzle\Http\Message\Response(200, [], []);
 			return $response;
 		}

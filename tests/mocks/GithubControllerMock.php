@@ -1,6 +1,7 @@
 <?php
 
 namespace yiiunit\extensions\githubbot\mocks;
+
 use app\commands\GithubController;
 
 /**

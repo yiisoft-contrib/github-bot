@@ -43,7 +43,7 @@ class GithubControllerTest extends TestCase
 		]);
 		$controller = new GithubController('github', Yii::$app);
 		$this->assertEquals([
-			'issues' => 'http://localhost/index.php?r=issues'
+			'issues,pull_request' => 'http://localhost/index.php?r=issues'
 		], $controller->hooks());
 	}
 
@@ -131,6 +131,6 @@ class GithubControllerTest extends TestCase
 		$controller = new GithubControllerMock('github', Yii::$app);
 		$controller->runAction('register');
 		$actual = $controller->flushStdOutBuffer();
-		$this->assertEquals("registering issues hook on " . $config['params']['repositories'][0] . "...added.\n", $actual);
+		$this->assertEquals("registering issues,pull_request hook on " . $config['params']['repositories'][0] . "...added.\n", $actual);
 	}
 }
