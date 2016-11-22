@@ -78,6 +78,16 @@ $application = new yii\web\Application([
 					'levels' => ['error', 'warning'],
 					'except' => ['yii\web\HttpException:404', 'action'],
 				],
+				[
+					'class' => 'yii\log\EmailTarget',
+					'levels' => ['error'],
+					'except' => ['yii\web\HttpException:404', 'action'],
+					'message' => [
+						'from' => ['bot@cebe.cc'],
+						'to' => ['hostmaster+yiibot@cebe.cc'],
+						'subject' => 'Yii-bot error',
+					],
+				],
 			],
 		],
 	],

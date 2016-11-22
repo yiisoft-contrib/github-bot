@@ -101,12 +101,12 @@ class IssuesController extends Controller
 				// add a comment to issue or pull request
 				if ($event === self::EVENTNAME_ISSUES) {
 					$this->replyWithCommentToIssue($params['repository'], $params['issue'], $action['comment']);
-					if ($action['close']) {
+					if (isset($action['close']) && $action['close']) {
 						$this->closeIssue($params['repository'], $params['issue']);
 					}
 				} elseif($event === self::EVENTNAME_PULL_REQUEST) {
 					$this->replyWithCommentToPr($params['repository'], $params['pull_request'], $action['comment']);
-					if ($action['close']) {
+					if (isset($action['close']) && $action['close']) {
 						$this->closePr($params['repository'], $params['pull_request']);
 					}
 				}
