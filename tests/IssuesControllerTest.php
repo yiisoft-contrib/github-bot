@@ -58,6 +58,11 @@ class IssuesControllerTest extends TestCase
 						'comment' => 'This issue needs more info',
 						'close' => false,
 					],
+					[
+						'label' => 'ext:test',
+						'action' => 'move',
+						'repo' => 'cebe/test',
+					],
 				]
 			],
 		]);
@@ -307,6 +312,123 @@ JSON;
 		$request2 = $this->httpClient->requests[1];
 		$this->assertEquals('repos/baxterthehacker/public-repo/pulls/1', $request2['path']);
 		$this->assertContains('{"state":"closed"}', $request2['body']);
+	}
+
+	public function testIssueOnLabelMove()
+	{
+		$_SERVER['REQUEST_METHOD'] = 'POST';
+		$_SERVER["CONTENT_TYPE"] = 'application/json';
+		Yii::$app->request->headers->add('X-Github-Event', 'issues');
+		// body is reduced size, real github request is more verbose
+		Yii::$app->request->rawBody = <<<JSON
+{
+  "action": "labeled",
+  "label": {
+    "name": "ext:test"
+  },
+  "issue": {
+    "url": "https://api.github.com/repos/baxterthehacker/public-repo/issues/2",
+    "html_url": "https://github.com/baxterthehacker/public-repo/issues/2",
+    "id": 73464126,
+    "number": 2,
+    "title": "Spelling error in the README file",
+    "state": "open",
+    "body": "It looks like you accidently spelled 'commit' with two 't's.",
+	"labels": [
+      {
+        "id": 208045946,
+        "url": "https://api.github.com/repos/baxterthehacker/public-repo/labels/ext:test",
+        "name": "ext:test",
+        "color": "fc2929",
+        "default": false
+      }
+    ],
+    "user": {
+      "login": "baxterthehacker"
+    }
+  },
+  "repository": {
+    "id": 35129377,
+    "name": "public-repo",
+    "full_name": "baxterthehacker/public-repo",
+    "owner": {
+      "login": "baxterthehacker",
+      "type": "User"
+    }
+  },
+  "sender": {
+    "login": "cebe"
+  }
+}
+JSON;
+		$this->signRequest(Yii::$app->request);
+
+		/** @var $controller IssuesController */
+		list($controller, ) = Yii::$app->createController('issues');
+		$response = $controller->runAction('index');
+		$this->assertEquals(['success' => true, 'action' => 'processed'], $response);
+
+		$this->assertCount(3, $this->httpClient->requests);
+		$request1 = $this->httpClient->requests[0];
+		$this->assertEquals('repos/cebe/test/issues', $request1['path']);
+		$this->assertContains('This issue has originally been reported by @baxterthehacker', $request1['body']);
+		$this->assertContains('https:\/\/github.com\/baxterthehacker\/public-repo\/issues\/2', $request1['body']);
+		$this->assertContains('Moved here by @cebe', $request1['body']);
+		$this->assertContains("It looks like you accidently spelled 'commit' with two 't's.", $request1['body']);
+		$request2 = $this->httpClient->requests[1];
+		$this->assertEquals('repos/baxterthehacker/public-repo/issues/2/comments', $request2['path']);
+		$this->assertContains('Issue moved to', $request2['body']);
+		$request3 = $this->httpClient->requests[2];
+		$this->assertEquals('repos/baxterthehacker/public-repo/issues/2', $request3['path']);
+		$this->assertContains('{"state":"closed"}', $request3['body']);
+	}
+
+	/**
+	 * moving PRs should not work
+	 */
+	public function testPrOnLabelDontMove()
+	{
+		$_SERVER['REQUEST_METHOD'] = 'POST';
+		$_SERVER["CONTENT_TYPE"] = 'application/json';
+		Yii::$app->request->headers->add('X-Github-Event', 'pull_request');
+		// body is reduced size, real github request is more verbose
+		Yii::$app->request->rawBody = <<<JSON
+{
+  "action": "labeled",
+  "label": {
+    "name": "ext:test"
+  },
+  "number": 1,
+  "pull_request": {
+    "url": "https://api.github.com/repos/baxterthehacker/public-repo/pulls/1",
+    "id": 34778301,
+    "number": 1,
+    "title": "Update the README with new information",
+    "state": "open",
+    "body": "This is a pretty simple change that we need to pull into master."
+  },
+  "repository": {
+    "id": 35129377,
+    "name": "public-repo",
+    "full_name": "baxterthehacker/public-repo",
+    "owner": {
+      "login": "baxterthehacker",
+      "type": "User"
+    }
+  },
+  "sender": {
+    "login": "baxterthehacker"
+  }
+}
+JSON;
+		$this->signRequest(Yii::$app->request);
+
+		/** @var $controller IssuesController */
+		list($controller, ) = Yii::$app->createController('issues');
+		$response = $controller->runAction('index');
+		$this->assertEquals(['success' => true, 'action' => 'processed'], $response);
+
+		$this->assertCount(0, $this->httpClient->requests);
 	}
 
 }

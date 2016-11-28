@@ -113,7 +113,7 @@ class IssuesController extends Controller
 				break;
 			case 'move':
 				// move an issue to another repository
-				if ($event !== self::EVENTNAME_ISSUES) {
+				if ($event === self::EVENTNAME_ISSUES) {
 					if ($params['issue']['state'] !== 'open') {
 						// do not move issue if it is closed, allow editing labels in closed state
 						break;
