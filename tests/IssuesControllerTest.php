@@ -383,6 +383,120 @@ JSON;
 		$this->assertContains('{"state":"closed"}', $request3['body']);
 	}
 
+	public function testIssueOnLabelMoveIgnoreIfSentByMe()
+	{
+		$_SERVER['REQUEST_METHOD'] = 'POST';
+		$_SERVER["CONTENT_TYPE"] = 'application/json';
+		Yii::$app->request->headers->add('X-Github-Event', 'issues');
+		// body is reduced size, real github request is more verbose
+		Yii::$app->request->rawBody = <<<JSON
+{
+  "action": "labeled",
+  "label": {
+    "name": "ext:test"
+  },
+  "issue": {
+    "url": "https://api.github.com/repos/baxterthehacker/public-repo/issues/2",
+    "html_url": "https://github.com/baxterthehacker/public-repo/issues/2",
+    "id": 73464126,
+    "number": 2,
+    "title": "Spelling error in the README file",
+    "state": "open",
+    "body": "It looks like you accidently spelled 'commit' with two 't's.",
+	"labels": [
+      {
+        "id": 208045946,
+        "url": "https://api.github.com/repos/baxterthehacker/public-repo/labels/ext:test",
+        "name": "ext:test",
+        "color": "fc2929",
+        "default": false
+      }
+    ],
+    "user": {
+      "login": "baxterthehacker"
+    }
+  },
+  "repository": {
+    "id": 35129377,
+    "name": "public-repo",
+    "full_name": "baxterthehacker/public-repo",
+    "owner": {
+      "login": "baxterthehacker",
+      "type": "User"
+    }
+  },
+  "sender": {
+    "login": "username-test"
+  }
+}
+JSON;
+		$this->signRequest(Yii::$app->request);
+
+		/** @var $controller IssuesController */
+		list($controller, ) = Yii::$app->createController('issues');
+		$response = $controller->runAction('index');
+		$this->assertEquals(['success' => true, 'action' => 'ignored'], $response);
+
+		$this->assertCount(0, $this->httpClient->requests);
+	}
+
+	public function testIssueOnLabelMoveIgnoreIfSameRepo()
+	{
+		$_SERVER['REQUEST_METHOD'] = 'POST';
+		$_SERVER["CONTENT_TYPE"] = 'application/json';
+		Yii::$app->request->headers->add('X-Github-Event', 'issues');
+		// body is reduced size, real github request is more verbose
+		Yii::$app->request->rawBody = <<<JSON
+{
+  "action": "labeled",
+  "label": {
+    "name": "ext:test"
+  },
+  "issue": {
+    "url": "https://api.github.com/repos/cebe/test/issues/2",
+    "html_url": "https://github.com/cebe/test/issues/2",
+    "id": 73464126,
+    "number": 2,
+    "title": "Spelling error in the README file",
+    "state": "open",
+    "body": "It looks like you accidently spelled 'commit' with two 't's.",
+	"labels": [
+      {
+        "id": 208045946,
+        "url": "https://api.github.com/repos/cebe/test/labels/ext:test",
+        "name": "ext:test",
+        "color": "fc2929",
+        "default": false
+      }
+    ],
+    "user": {
+      "login": "baxterthehacker"
+    }
+  },
+  "repository": {
+    "id": 35129377,
+    "name": "test",
+    "full_name": "cebe/test",
+    "owner": {
+      "login": "cebe",
+      "type": "User"
+    }
+  },
+  "sender": {
+    "login": "cebe"
+  }
+}
+JSON;
+		$this->signRequest(Yii::$app->request);
+
+		/** @var $controller IssuesController */
+		list($controller, ) = Yii::$app->createController('issues');
+		$response = $controller->runAction('index');
+		$this->assertEquals(['success' => true, 'action' => 'processed'], $response);
+
+		$this->assertCount(0, $this->httpClient->requests);
+	}
+
 	/**
 	 * moving PRs should not work
 	 */
