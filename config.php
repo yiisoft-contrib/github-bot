@@ -133,7 +133,7 @@ COMMENT
 Thank you for putting effort in the improvement of the Yii framework. 
 We have reviewed your pull request.
 
-Unfortunately a use case is missing. It is required to get a better understanding of the pull request and hels us to get the necessity and applicability of the suggested change to the framework.
+Unfortunately a use case is missing. It is required to get a better understanding of the pull request and helps us to determine the necessity and applicability of the suggested change to the framework.
 
 Could you supply us with a use case please? Please be as detailed as possible and show some code!
 
