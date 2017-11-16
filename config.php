@@ -62,10 +62,10 @@ COMMENT
 		],
 		
 		/**
-		 * Unformatted issue
+		 * missing formatting
 		 */
 		[
-			'label' => 'unformatted',
+			'label' => 'missing formatting',
 			'action' => 'comment',
 			'comment' => <<<COMMENT
 Thank you for your issue.
@@ -75,7 +75,7 @@ Please check GitHub formatting guide and wrap code accordingly.
 
 Thanks!
 
-_This is an automated comment, triggered by adding the label `unformatted`._
+_This is an automated comment, triggered by adding the label `missing formatting`._
 COMMENT
 			,
 		],
