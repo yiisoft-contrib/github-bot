@@ -71,7 +71,7 @@ COMMENT
 Thank you for your issue.
 
 Unfortunately code that is not formatted as code blocks is extremely hard to read.
-Please check GitHub formatting guide and wrap code accordingly.
+Please check [GitHub formatting guide](https://guides.github.com/features/mastering-markdown/) and wrap code accordingly.
 
 Thanks!
 
