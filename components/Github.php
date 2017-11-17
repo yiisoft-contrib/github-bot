@@ -19,7 +19,7 @@ class Github extends Component
 	/**
 	 * @return \Github\Client
 	 */
-	public function client()
+	public function client($token = null)
 	{
 		// create client
 		$client = Yii::createObject(\Github\HttpClient\CachedHttpClient::class);
@@ -34,7 +34,7 @@ class Github extends Component
 		}
 
 		// authenticate
-		$client->authenticate(Yii::$app->params['github_token'], '', \Github\Client::AUTH_HTTP_TOKEN);
+		$client->authenticate($token ?: Yii::$app->params['github_token'], '', \Github\Client::AUTH_HTTP_TOKEN);
 
 		return $client;
 	}

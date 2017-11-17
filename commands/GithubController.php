@@ -3,6 +3,7 @@
 namespace app\commands;
 
 use Github\Api\Repo;
+use Github\Client;
 use Yii;
 use yii\base\Exception;
 use yii\console\Controller;
@@ -15,6 +16,18 @@ use yii\helpers\Console;
  */
 class GithubController extends  Controller
 {
+	/**
+	 * @var bool specify this flag if the bot github user has no admin privileges for managing hooks.
+	 * You can enter your github name and password instead.
+	 */
+	public $noAdmin = false;
+
+
+	public function options($actionID)
+	{
+		return array_merge(parent::options($actionID), ['noAdmin']);
+	}
+
 	public function init()
 	{
 		parent::init();
@@ -42,8 +55,7 @@ class GithubController extends  Controller
 	 */
 	public function actionStatus(array $limitRepos = [])
 	{
-		/** @var $client \Github\Client */
-		$client = Yii::$app->github->client();
+		$client = $this->getClient();
 
 		$repositories = Yii::$app->params['repositories'];
 		if (!empty($limitRepos)) {
@@ -67,15 +79,15 @@ class GithubController extends  Controller
 				// check if hook exists
 				$hookId = null;
 				foreach ($api->hooks()->all($user, $repo) as $hook) {
-					if ($hook['name'] == 'web' && isset($hook['config']['url']) && $hook['config']['url'] === $hookUrl) {
+					if ($hook['name'] === 'web' && isset($hook['config']['url']) && $hook['config']['url'] === $hookUrl) {
 						$hookId = $hook['id'];
 						break;
 					}
 				}
 				if ($hookId) {
-					$this->stdout("registered.", Console::BOLD, Console::FG_GREEN);
+					$this->stdout("registered.\n", Console::BOLD, Console::FG_GREEN);
 				} else {
-					$this->stdout("not registered.", Console::BOLD, Console::FG_RED);
+					$this->stdout("not registered.\n", Console::BOLD, Console::FG_RED);
 				}
 			}
 		}
@@ -95,8 +107,7 @@ class GithubController extends  Controller
 	 */
 	public function actionRegister(array $limitRepos = [])
 	{
-		/** @var $client \Github\Client */
-		$client = Yii::$app->github->client();
+		$client = $this->getClient();
 
 		$repositories = Yii::$app->params['repositories'];
 		if (!empty($limitRepos)) {
@@ -120,7 +131,7 @@ class GithubController extends  Controller
 				// check if hook exists
 				$hookId = null;
 				foreach ($api->hooks()->all($user, $repo) as $hook) {
-					if ($hook['name'] == 'web' && isset($hook['config']['url']) && $hook['config']['url'] === $hookUrl) {
+					if ($hook['name'] === 'web' && isset($hook['config']['url']) && $hook['config']['url'] === $hookUrl) {
 						$this->stdout("already registered, updating...");
 						$hookId = $hook['id'];
 						break;
@@ -152,8 +163,7 @@ class GithubController extends  Controller
 
 	public function actionUnRegister(array $limitRepos = [])
 	{
-		/** @var $client \Github\Client */
-		$client = Yii::$app->github->client();
+		$client = $this->getClient();
 
 		$repositories = Yii::$app->params['repositories'];
 		if (!empty($limitRepos)) {
@@ -176,7 +186,7 @@ class GithubController extends  Controller
 
 				// check if hook exists
 				foreach ($api->hooks()->all($user, $repo) as $hook) {
-					if ($hook['name'] == 'web' && isset($hook['config']['url']) && $hook['config']['url'] === $hookUrl) {
+					if ($hook['name'] === 'web' && isset($hook['config']['url']) && $hook['config']['url'] === $hookUrl) {
 						$api->hooks()->remove($user, $repo, $hook['id']);
 					}
 					break;
@@ -184,5 +194,26 @@ class GithubController extends  Controller
 				$this->stdout("done.\n", Console::FG_GREEN, Console::BOLD);
 			}
 		}
+	}
+
+	/**
+	 * @return Client
+	 */
+	private function getClient()
+	{
+		$token = null;
+		if ($this->noAdmin) {
+			$this->stdout("Please go to https://github.com/settings/tokens and generate a token.\n\n");
+			$this->stdout("Required permissions: ");
+			$this->stdout("admin:org, admin:repo_hook", Console::BOLD);
+			$this->stdout("\n\n");
+
+			$token = $this->prompt('Token? ');
+		}
+
+		/** @var $client \Github\Client */
+		$client = Yii::$app->github->client($token);
+
+		return $client;
 	}
 }

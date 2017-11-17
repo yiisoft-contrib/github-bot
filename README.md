@@ -14,7 +14,7 @@ This is a bot that helps with automated comments on github issues.
 - run `composer install`
 - create a `config.local.php` and override things from `config.php` there.
 - run `./yii github/register` to install webhooks in the repos.
-  - The bot user needs Admin privilege to do this, this can be removed after registering the hooks, so it only needs Write privilege for normal actions.
+  - The bot user needs Admin privilege to do this, this can be removed after registering the hooks, so it only needs Write privilege for normal actions. Alternatively you can specify the `--noAdmin` option for running the command, which allows you to specify a github auth token for a user that has admin privileges.
   - register can safely run multiple times, it does check whether a hook already exists and updates the hook instead of adding duplicates.
 
 ## Uninstall
