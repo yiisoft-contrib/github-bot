@@ -255,6 +255,12 @@ COMMENT
 		],
 
 		[
+			'label' => 'ext:queue',
+			'action' => 'move',
+			'repo' => 'yiisoft/yii2-queue',
+		],
+
+		[
 			'label' => 'ext:redis',
 			'action' => 'move',
 			'repo' => 'yiisoft/yii2-redis',
@@ -282,6 +288,12 @@ COMMENT
 			'label' => 'ext:smarty',
 			'action' => 'move',
 			'repo' => 'yiisoft/yii2-smarty',
+		],
+
+		[ // allow moving issue to Yii core
+			'label' => 'core issue',
+			'action' => 'move',
+			'repo' => 'yiisoft/yii2',
 		],
 
 	],
