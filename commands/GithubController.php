@@ -33,6 +33,54 @@ class GithubController extends  Controller
 		];
 	}
 
+
+	/**
+	 * Check on which repos events are registered on the github API.
+	 *
+	 * @param array $limitRepos limit this call to a certain set of repos. This is a comma separated list of repos.
+	 * The default is to run against all configured repos.
+	 */
+	public function actionStatus(array $limitRepos = [])
+	{
+		/** @var $client \Github\Client */
+		$client = Yii::$app->github->client();
+
+		$repositories = Yii::$app->params['repositories'];
+		if (!empty($limitRepos)) {
+			$repositories = array_intersect($limitRepos, $repositories);
+		}
+
+		// check hooks:
+		foreach($repositories as $urepo) {
+			foreach($this->hooks() as $hookName => $hookUrl) {
+
+				$this->stdout("checking ");
+				$this->stdout("$hookName", Console::BOLD);
+				$this->stdout(" hook on ");
+				$this->stdout($urepo, Console::BOLD);
+				$this->stdout('...');
+				list($user, $repo) = explode('/', $urepo);
+
+				// https://developer.github.com/v3/repos/hooks/#create-a-hook
+				$api = Yii::createObject(\Github\Api\Repo::class, [$client]);
+
+				// check if hook exists
+				$hookId = null;
+				foreach ($api->hooks()->all($user, $repo) as $hook) {
+					if ($hook['name'] == 'web' && isset($hook['config']['url']) && $hook['config']['url'] === $hookUrl) {
+						$hookId = $hook['id'];
+						break;
+					}
+				}
+				if ($hookId) {
+					$this->stdout("registered.", Console::BOLD, Console::FG_GREEN);
+				} else {
+					$this->stdout("not registered.", Console::BOLD, Console::FG_RED);
+				}
+			}
+		}
+	}
+
 	/**
 	 * Register for events on the github API.
 	 *
