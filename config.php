@@ -60,6 +60,25 @@ _This is an automated comment, triggered by adding the label `status:need more i
 COMMENT
 			,
 		],
+		
+		/**
+		 * missing formatting
+		 */
+		[
+			'label' => 'missing formatting',
+			'action' => 'comment',
+			'comment' => <<<COMMENT
+Thank you for your issue.
+
+Unfortunately code that is not formatted as code blocks is extremely hard to read.
+Please check [GitHub formatting guide](https://guides.github.com/features/mastering-markdown/) and wrap code accordingly.
+
+Thanks!
+
+_This is an automated comment, triggered by adding the label `missing formatting`._
+COMMENT
+			,
+		],
 
 		[
 			'label' => 'expired',
