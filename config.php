@@ -174,7 +174,7 @@ In order for this issue tracker to be effective, it should only contain bug repo
 We advise you to use our community driven resources:
 * [The support forum](http://www.yiiframework.com/forum/)
 * [The IRC chat room](http://www.yiiframework.com/chat/)
-* [The Gitter chat room](https://gitter.im/yiisoft/yii2)
+* [Slack](https://join.slack.com/t/yii/shared_invite/MjIxMjMxMTk5MTU1LTE1MDE3MDAwMzMtM2VkMTMyMjY1Ng)
 * [The Definitive Guide to Yii](http://www.yiiframework.com/doc-2.0/guide-index.html)
 
 If you are confident that there is a bug in the framework, feel free to provide information on how to reproduce it. This issue will be closed for now.
