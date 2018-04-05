@@ -207,6 +207,12 @@ COMMENT
 		],
 
 		[
+			'label' => 'ext:captcha',
+			'action' => 'move',
+			'repo' => 'yiisoft/yii2-captcha',
+		],
+
+		[
 			'label' => 'ext:codeception',
 			'action' => 'move',
 			'repo' => 'yiisoft/yii2-codeception',
@@ -249,6 +255,12 @@ COMMENT
 		],
 
 		[
+			'label' => 'ext:jquery',
+			'action' => 'move',
+			'repo' => 'yiisoft/yii2-jquery',
+		],
+
+		[
 			'label' => 'ext:mongodb',
 			'action' => 'move',
 			'repo' => 'yiisoft/yii2-mongodb',
@@ -264,6 +276,12 @@ COMMENT
 			'label' => 'ext:redis',
 			'action' => 'move',
 			'repo' => 'yiisoft/yii2-redis',
+		],
+
+		[
+			'label' => 'ext:rest',
+			'action' => 'move',
+			'repo' => 'yiisoft/yii2-rest',
 		],
 
 		[
