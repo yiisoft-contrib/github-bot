@@ -199,6 +199,12 @@ COMMENT
 			'action' => 'move',
 			'repo' => 'yiisoft/yii2-authclient',
 		],
+		
+		[
+			'label' => 'ext:httpclient',
+			'action' => 'move',
+			'repo' => 'yiisoft/yii2-httpclient',
+		],
 
 		[
 			'label' => 'ext:bootstrap',
