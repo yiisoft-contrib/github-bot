@@ -188,8 +188,8 @@ class GithubController extends  Controller
 				foreach ($api->hooks()->all($user, $repo) as $hook) {
 					if ($hook['name'] === 'web' && isset($hook['config']['url']) && $hook['config']['url'] === $hookUrl) {
 						$api->hooks()->remove($user, $repo, $hook['id']);
+						break;
 					}
-					break;
 				}
 				$this->stdout("done.\n", Console::FG_GREEN, Console::BOLD);
 			}
