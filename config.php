@@ -319,6 +319,12 @@ COMMENT
 			'action' => 'move',
 			'repo' => 'yiisoft/yii2',
 		],
+		
+		[ // allow moving issue to Yii 3.x core
+			'label' => 'yii3:core issue',
+			'action' => 'move',
+			'repo' => 'yiisoft/yii-core',
+		],
 
 	],
 
