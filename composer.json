@@ -18,5 +18,20 @@
 	"require-dev": {
 		"phpunit/phpunit": "~4.0",
 		"yiisoft/yii2-shell": "~2.0.0"
-	}
+	},
+	"config": {
+        "allow-plugins": {
+            "yiisoft/yii2-composer" : true
+        },
+        "process-timeout": 1800,
+        "fxp-asset": {
+            "enabled": false
+        }
+    },
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://asset-packagist.org"
+        }
+    ]
 }
